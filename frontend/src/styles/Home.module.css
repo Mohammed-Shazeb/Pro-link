@@ -1,0 +1,49 @@
+.container{
+  font-family: "Poppins";
+  padding: 1.2rem;
+}
+
+.mainContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  padding-inline: 2rem;
+  height: 80vh;
+} 
+
+.mainContainer_left{
+  flex: 0.5;
+}
+
+.mainContainer_right{
+  flex: 0.5;
+}
+
+
+.mainContainer_left > p:nth-child(1){
+  font-size: 2.9rem;
+  background: -webkit-linear-gradient(70deg, #000000, #b2b2b2);
+  background-clip: text;
+  font-weight: bold;
+  -webkit-text-fill-color: transparent;
+}
+
+.mainContainer_left > p:nth-child(2){
+  color: #4d4d4d;
+  font-size: 1.7rem;
+}
+
+.mainContainer_left >  div.buttonJoin{
+  width: fit-content;
+  margin-top: 0.8rem;
+  font-size: 1.4rem;
+  transition: all 0.2s;
+  user-select: none;
+  cursor: pointer;
+  background: rgb(197, 44, 208);
+  color: white;
+  padding-inline: 1.2rem;
+  padding-block: 0.6rem;
+  border-radius: 0.4rem;
+}

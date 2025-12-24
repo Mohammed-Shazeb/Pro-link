@@ -1,0 +1,43 @@
+.homeContainer {
+    display: flex;
+    /* flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem; */
+}
+
+.homeContainer > div:nth-child(odd) {
+    flex: 0.2;
+}
+
+.homeContainer > div:nth-child(even) {
+    flex: 0.4;
+}
+
+.homeContainer_leftBar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: start;
+}
+
+.sideBarOption {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    gap: 1.2rem;
+    width: 80%;
+    max-width: 80%;
+    margin: 0 auto;
+    cursor: pointer;
+    trasnsition: all 0.8ms;
+}
+
+.sideBarOption:hover {
+    transform: scale(1.01);
+}
+
+.sideBarOption > svg {
+    height: 1.4em;
+    min-width: fit-content;
+}
