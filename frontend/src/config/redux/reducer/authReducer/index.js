@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser, getAboutUser, getAllUsers } from "@/config/redux/action/authAction";
+import { loginUser, registerUser, getAboutUser, getAllUsers, getConnectionsRequest, getMyConnectionRequest } from "@/config/redux/action/authAction";
 
 const initialState = {
     user: undefined,
@@ -11,7 +11,7 @@ const initialState = {
     isTokenThere: false,
     profileFetcher: false,
     connections: [],
-    connectionReuqest: [],
+    connectionRequests: [],
     all_Users: [],
     all_profiles_fetched: false,
 }
@@ -21,7 +21,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        reset: initialState,
+        reset: () => initialState,
         handleLoginUser: (state) => {
             state.message = "hello"
         },
@@ -91,7 +91,28 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.all_profiles_fetched = true;
                 state.all_Users = action.payload.profiles;
-
+            })
+            .addCase(getConnectionsRequest.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.connectionRequests = Array.isArray(action.payload)
+                    ? action.payload
+                    : action.payload?.connections || [];
+            })
+            .addCase(getConnectionsRequest.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getMyConnectionRequest.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.connections = Array.isArray(action.payload)
+                    ? action.payload
+                    : action.payload?.connections || [];
+            })
+            .addCase(getMyConnectionRequest.rejected, (state, action) => {
+                state.message = action.payload;
             })
     }
 })

@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllUsers } from '@/config/redux/action/authAction';
 import styles from './index.module.css';
-
+import { useRouter } from 'next/navigation';
+import { BASE_URL } from '@/config';
 
 
 export default function Discoverpage() {
@@ -17,6 +18,7 @@ export default function Discoverpage() {
             dispatch(getAllUsers());
         }
     }, [])
+    const router = useRouter();
     return (
         <UserLayout>
             <DashBoardLayout>
@@ -29,8 +31,11 @@ export default function Discoverpage() {
                             if (!user.userId) return null;
 
                             return (
-                                <div key={user._id} className={styles.userCard}>
-                                    <img className={styles.userCard_img} src={`http://localhost:9080/${user.userId.profilePicture?.includes('uploads/') ? user.userId.profilePicture : `uploads/${user.userId.profilePicture}`}`} alt="profile" />
+                                <div onClick={() =>{
+                                    router.push(`view_profile/${user.userId.userName}`)
+                                }} key={user._id} className={styles.userCard}>
+                                    {/* <img className={styles.userCard_img} src={`${BASE_URL}/uploads/${user.userId.profilePicture}`} alt="profile" /> */}
+                                    <img className={styles.userCard_img} src={`${BASE_URL}/${user.userId.profilePicture}`} alt="profile" />
                                     <div>
                                         <p>{user.userId.name}</p>
                                         <p>@{user.userId.userName}</p>

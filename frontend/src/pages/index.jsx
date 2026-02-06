@@ -9,7 +9,7 @@ import UserLayout from "@/layout/UserLayout";
 
 export default function Home() {
   const router = useRouter();
-  return ( 
+  return (
     <UserLayout>
       <div className={styles.container}>
 
@@ -22,13 +22,12 @@ export default function Home() {
 
             <div onClick={() => {
               router.push('/login')
-              
-            }} className={styles.buttonJoin  }>
+
+            }} className={styles.buttonJoin}>
               <p>Join Now</p>
             </div>
           </div>
           <div className={styles.mainContainer_right}>
-            {/* <img src="/images/homePage_connection.jpg" alt="" /> */}
             <img src="/images/homePage_connection.jpg" alt="" />
           </div>
         </div>

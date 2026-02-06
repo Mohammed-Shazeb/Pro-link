@@ -96,20 +96,44 @@
     width: 10%;
     border-radius: 50%;
 }
-
 .singleCard_image {
-    max-width: 100%;
-    padding-top: 0.6rem;
-    height: fit-content;
-    overflow: hidden;
+  width: 95%;
+  aspect-ratio: 16 / 9;   /* consistent feed */
+  max-height: 450px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #000;
 }
 
-.singleCard_image>img {
-    width: 100%;
-    height: fit-content;
-    object-fit: cover;
-    border-radius: 20px;
+/* blurred background layer */
+.singleCard_image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px);
+  transform: scale(1.15);
+  opacity: 0.6;
 }
+
+/* actual image */
+.singleCard_image > img {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: auto;
+  display: block;
+}
+
+
+
 
 .optionsContainer {
     display: flex;
@@ -130,6 +154,7 @@
 .singleCard_OptionsContainer>svg {
     height: 100%;
     width: 16%;
+    min-width: 1rem;
 }
 
 .commentsContainer {
@@ -153,32 +178,39 @@
     border-radius: 20px;
     position: relative;
     padding: 1.5rem;
-    /* overflow-y: scroll; */
+    padding-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.commentsScrollArea {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 1rem;
 }
 
 .postCommentsContainer {
     position: absolute;
-    bottom: 1.2rem;
-    left: 1.2rem;
-    width: 90%;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 1rem;
     align-items: center;
     justify-content: center;
     gap: 1.2rem;
+    padding: 1.2rem;
+    background: white;
+    border-radius: 0 0 20px 20px;
 }
 
 .postCommentsContainer>input{
     flex: 0.9;
     padding-inline: 1.5rem;
     padding-block: 1.2rem;
-    /* width: 80%;
-    height: 2.5rem; */
     border: none;
+    outline: none;
     background-color: rgb(228, 228, 228);
     border-radius: 10px;
-    /* padding-inline: 1rem; */
-    outline: none;
 }
 
 
@@ -195,4 +227,10 @@
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+    .allCommentsContainer {
+        width: 90%;
+    }
 }

@@ -100,7 +100,7 @@ export default function Dashboard() {
                                                     <p style={{ paddingTop: "1.3rem" }}>{post.body}</p>
 
                                                     <div className={styles.singleCard_image}>
-                                                        <img src={`${BASE_URL}/${post.media}`} alt="" />
+                                                        {post.media !== "" ? <img src={`${BASE_URL}/uploads/${post.media}`} alt="" /> : <></>}
                                                     </div>
 
                                                     <div className={styles.optionsContainer}>
@@ -165,30 +165,33 @@ export default function Dashboard() {
                                 e.stopPropagation()
                             }} className={styles.allCommentsContainer}>
 
-                                {postState.comments.length === 0 && <h2>No Comments</h2>}
+                                <div className={styles.commentsScrollArea}>
+                                    {postState.comments.length === 0 && <h2>No Comments</h2>}
 
-                                {postState.comments.length !== 0 &&
+                                    {postState.comments.length !== 0 &&
 
-                                    <div>
-                                        {postState.comments.map((comment, index) => {
-                                            return (
-                                                <div className={styles.singleComment} key={comment._id}>
-                                                    <div className={styles.singleComment_profileContainer}>
-                                                        {/* <img src={`${BASE_URL}/${comment.userId.profilePicture?.includes('uploads/') ? comment.userId.profilePicture : `uploads/${comment.userId.profilePicture}`}`} alt="" /> */}
-                                                        <div>
-                                                            <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>{comment.userId.name}</p>
-                                                            <p> @ {comment.userId.userName}</p>
+                                        <div>
+                                            {postState.comments.map((comment, index) => {
+                                                return (
+                                                    <div className={styles.singleComment} key={comment._id}>
+                                                        <div className={styles.singleComment_profileContainer}>
+                                                            {/* <img src={`${BASE_URL}/${comment.userId.profilePicture?.includes('uploads/') ? comment.userId.profilePicture : `uploads/${comment.userId.profilePicture}`}`} alt="" /> */}
+                                                            <div>
+                                                                <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>{comment.userId.name}</p>
+                                                                <p> @ {comment.userId.userName}</p>
+                                                            </div>
                                                         </div>
+                                                        <p>
+                                                            {comment.body}
+                                                        </p>
+                                                        <hr />
                                                     </div>
-                                                    <p>
-                                                        {comment.body}
-                                                    </p>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
+                                                )
+                                            })}
+                                        </div>
 
-                                }
+                                    }
+                                </div>
 
 
                                 <div className={styles.postCommentsContainer}>

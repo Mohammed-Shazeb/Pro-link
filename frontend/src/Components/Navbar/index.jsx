@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
 import styles from './styles.module.css'
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { reset } from '@/config/redux/reducer/authReducer';
 export default function NavBarComponent() {
 
     const router = useRouter();
@@ -21,8 +20,10 @@ export default function NavBarComponent() {
 
                     {authState.profileFetcher && <div>
                         <div style={{ display: "flex", gap: "1.2rem" }}>
-                            <p>Hey, {authState.user?.userId?.name}</p>
-                            <p style={{ fontWeight: "bold", cursor: "pointer" }}>Profile</p>
+                            {/* <p>Hey, {authState.user?.userId?.name}</p> */}
+                            <p onClick={() => {
+                                router.push("/profile")
+                            }} style={{ fontWeight: "bold", cursor: "pointer" }}>Profile</p>
 
 
                             <p onClick={() =>{

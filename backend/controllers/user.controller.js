@@ -94,18 +94,23 @@ export const login = async (req, res) => {
 export const uploadProfilePicture = async (req, res) => {
     const { token } = req.body;
     try {
+        if (!token) {
+            return res.status(400).json({ message: "Missing token" });
+        }
+        if (!req.file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
         const user = await User.findOne({ token: token });
 
         if (!user) return res.status(400).json({ message: "Invalid token" });
 
-        // user.profilePicture = req.file.path;
         user.profilePicture = `uploads/${req.file.filename}`;
         await user.save();
 
         return res.status(200).json({ message: "Profile picture updated successfully" });
 
     } catch (error) {
-        return res.status(500).json({ message: "Server Error" });
+        return res.status(500).json({ message: error.message || "Server Error" });
     }
 }
 
@@ -184,7 +189,7 @@ export const getAllUserProfile = async (req, res) => {
 export const downloadProfile = async (req, res) => {
     const user_id = req.query.id;
 
-    const userProfile = await Profile.findOne({ userId: user._id })
+    const userProfile = await Profile.findOne({ userId: user_id })
         .populate('userId', 'name email userName profilePicture');
 
     let outputPath = await convertUserDataToPDF(userProfile);
@@ -241,9 +246,10 @@ export const whatAreMyConnections = async (req, res) => {     // requests sent t
         if (!user) return res.status(400).json({ message: "Invalid token" });
 
         const connections = await ConnectionRequest.find({ connectionId: user._id })
+            .populate('userId', 'name userName email profilePicture')
             .populate('connectionId', 'name userName email profilePicture');
 
-        return res.json(connections);
+        return res.json({ connections });
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -263,10 +269,10 @@ export const acceptConnectionRequest = async (req, res) => {    // let a user ac
         if (!connection) return res.status(404).json({ message: "Connection request not found" });
 
         if (action_type === 'accept') {
-            connection.status_accepted = true;
+            connection.status_accepted = "accepted";
 
         } else {
-            connection.status_accepted = false;
+            connection.status_accepted = "declined";
         }
         await connection.save();
         return res.json({ message: "Connection request accepted" });
@@ -297,6 +303,27 @@ export const commentPost = async (req, res) => {
         await comment.save();
 
         return res.status(200).json({ message: "Comment added successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error" });
+    }
+}
+
+export const getUserProfileAndUserBasedOnUsername = async (req, res) => {
+    const { username } = req.query;
+    console.log("API called with username:", username);
+    try {
+        const user = await User.findOne({ userName: { $regex: username, $options: 'i' } });
+        console.log("User found:", user);
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+        
+        const userProfile = await Profile.findOne({ userId: user._id })
+            .populate('userId', 'name email userName profilePicture');
+
+        if (!userProfile) return res.status(404).json({ message: "Profile not found" });
+
+        return res.json({"profile": userProfile });
+
     } catch (error) {
         return res.status(500).json({ message: "Server Error" });
     }
