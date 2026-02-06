@@ -2,7 +2,7 @@ import axios from "axios";
 // import {defualt:axios} = require ("axios");
 
 
-export const BASE_URL = "http://localhost:9080"
+export const BASE_URL = "https://pro-link-1.onrender.com/"
 
 export const clientServer = axios.create({
     baseURL: BASE_URL,
