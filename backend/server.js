@@ -11,7 +11,24 @@ import userRoutes from './routes/user.routes.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+  "https://pro-link-glub.vercel.app",
+  "http://localhost:3000",
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
@@ -26,8 +43,9 @@ const start = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("Connected to MongoDB");
 
-    app.listen(9080, () => {
-      console.log("Server is running on port 9080");
+    const port = process.env.PORT || 9080;
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
